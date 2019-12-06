@@ -23,10 +23,10 @@ final class ChunkBuffer {
     func readLine() -> String? {
         var line: String?
 
-        while let endIndex = buffer.index(of: "\n") {
-            let substring = buffer[..<endIndex]
-            buffer.removeSubrange(buffer.startIndex ..< buffer.index(after: endIndex))
-
+        while let endIndex = buffer.range(of: "\r") ?? buffer.range(of: "\n") {
+            let substring = buffer[buffer.startIndex..<endIndex.lowerBound]
+            buffer.removeSubrange(buffer.startIndex ..< endIndex.upperBound)
+            
             if !substring.isEmpty {
                 line = String(substring)
                 break
